@@ -1,0 +1,170 @@
+```
++---------------------------------------+
+|                                       |
+|                                       |
+|       Copyright Dragomir Andrei       |
+|               312 CA                  |
+|                                       |
+|                                       |
++---------------------------------------+
+```
+
+--------------------------------------------------------------------------
+# The approach taken in order to create the Octave Simulator is representing
+# in memory an array of matrices(int ***) which will be modified through 
+# succesive commands afterwards:
+
+-   `'L'` - Loads a matrix with the given sizes into the memory
+
+-   `'D'` - Prints the size of the matrix at the given index
+
+-   `'P'` - Prints the matrix at the given index
+
+-   `'C'` - Resizes the matrix with the given instructions
+
+-   `'M'` - Multiplies two matrixes and returns it to the last index (naive)
+
+-   `'O'` - Sorts the matrixes based on the sums of it's elements
+
+-   `'T'` - Transposes the matrix at the given index
+
+-   `'F'` - Frees the matrix at a given index
+
+-   `'Q'` - Stops the program, frees all the memory alocated at runtime
+
+-   `'S'` - Uses the strassen algorithm to multiply square matrixes
+
+# We create a panel using an while and multiple if elses until we reach
+end of input meaning character Q.
+
+----------------------------------------------------------------------------
+
+# Array dimensions gets the values of nr_lines, nr_columns in
+# sequences of two like this (for matrixes 2x2, 3x3, 2x3, 4x2, so on...):
+
+# 0 -> 2
+# 1 -> 2
+
+# 2 -> 3
+# 3 -> 3
+
+# 4 -> 2
+# 5 -> 3
+
+# 6 -> 4
+# 7 -> 2
+
+
+-------------------------------------------------------------------------------|
+# L command                                                                    |
+                                                                               |
+*L is based on creating space in memory for a new matrix in the array and then |
+with a basic function to alloc space for a matrix                              |
+*We are using realloc in order to increase the size of the array with an int **|
+more each time we get to load a matrix                                         |
+*We proceed on doing the same with an array of dimensions we will need later   |
+putting dimensions in sequences of 2 and reallocating each time 2 new spaces   |
+for new matrix dimensions                                                      |
+-------------------------------------------------------------------------------| 
+
+
+
+-------------------------------------------------------------------------------|
+# D command                                                                    |
+                                                                               |
+*Goes to dimensions array and picks up dimensions based on the given index     |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# P command                                                                    |
+                                                                               |
+*Basic approach to go to the memory place of the given matrix by index and     |
+print it with a function                                                       |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# C command                                                                    |
+                                                                               |
+*We get as input 2 arrays of restrictions we use to crop a matrix by creating  |
+a temporary matrix with elements from the lines and columns specified in the 2 |
+given arrays                                                                   |
+*After we change the previous matrix with the one created by us                |
+-------------------------------------------------------------------------------|	
+
+
+
+-------------------------------------------------------------------------------|
+# M command                                                                    |
+                                                                               |
+*We get 2 indexes as input and we need to put at the end of the array of       |
+matrices a new matrix consisting of the multiplication of the 2 given by       |
+read indexes                                                                   |
+*We use a basic multiplication function alongside with allocating a new        |
+space of memory with the nr of lines of the first matrix and nr of columns     |
+of the second one                                                              |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# O command                                                                    |
+                                                                               |
+*O performs a sorting algorithm by swaping pointers in the matrix array and    |
+also swapping values in the dimensions array                                   |
+*The sort it based on the sum of elements of each matrix with a LIMIT of       |
+10 007 and thats why we use modulo to keep it in range and add this LIMIT      |
+when we are on the negative side                                               |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# T command                                                                    |
+                                                                               |
+*We perform a transpotion of the given by index matrix and put it in place     |
+of the old matrix all of this using a copy                                     |
+*We swap nr of lines with nr of columns to match the matrix new dimensions     |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# F command                                                                    |
+                                                                               |
+*Free command is basically emptying the space in memory of the given matrix    |
+and after that moving the pointers with one index to the right and forgetting  |
+the freed index                                                                |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# Q command                                                                    |
+                                                                               |
+*Q means we get out of the while and we need to free each matrix in the array  |
+then we need to free the array itself in order to have all resources freed     |
+-------------------------------------------------------------------------------|
+
+
+
+-------------------------------------------------------------------------------|
+# S command                                                                    |
+                                                                               |
+*The hardest part is square matrix multiplication with Strassen                |
+*This algorithm is heavy memory demanding but works a little faster than       |
+naive multiplication                                                           |
+*The main idea is splitting square matrices in sections of 4 and treating      |
+this sections as elements themselves                                           |
+*Implementation uses divide and conquer technique because when we will reach   |
+a simple matrix we can use basic formula for multiplication, in rest we make   |
+use of add and subtract functions to work on matrices for making this method   |
+work                                                                           |
+-------------------------------------------------------------------------------|
+
+
+
+
